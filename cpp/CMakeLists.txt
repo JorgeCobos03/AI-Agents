@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+project(ai_agents_planner LANGUAGES CXX)
+add_library(planner SHARED planner.cpp)
+target_compile_features(planner PRIVATE cxx_std_20)
+set_target_properties(planner PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)

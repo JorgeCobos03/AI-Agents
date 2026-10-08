@@ -1,0 +1,12 @@
+{
+  "train": {
+    "security": ["token leak exposes private credentials", "unauthorized access to admin account", "phishing attack steals password", "malware detected on server", "SQL injection vulnerability in login", "secret key exposed in public repository", "suspicious authentication attempts and breach", "ransomware encrypts sensitive files", "fuga de credenciales y token privado", "acceso no autorizado a cuenta", "ataque phishing roba contrasena", "vulnerabilidad de seguridad en autenticacion", "secreto expuesto en repositorio publico", "malware y robo de datos sensibles", "security alert suspicious login", "compromised account password leak"],
+    "reliability": ["database timeout service unavailable", "server crash causes outage", "connection refused database offline", "service down after failed deployment", "backup recovery failed data loss", "health check fails unavailable endpoint", "replica disconnect causes error", "network failure crashes service", "base de datos caida servicio no disponible", "servidor caido error de conexion", "fallo de despliegue causa interrupcion", "recuperacion de respaldo fallida", "servicio desconectado y perdida de datos", "error timeout en base de datos", "outage service unavailable connection failure", "crash and failed recovery"],
+    "performance": ["slow query high latency", "CPU usage causes slow response", "memory pressure reduces throughput", "cache misses increase response time", "large payload takes too long", "slow rendering and expensive computation", "bottleneck in query processing", "optimize latency and throughput", "consulta lenta y alta latencia", "uso de CPU aumenta tiempo de respuesta", "memoria saturada reduce rendimiento", "cache lento y cuello de botella", "optimizar rendimiento de consultas", "carga lenta por calculo costoso", "performance slow response time", "high latency low throughput"]
+  },
+  "test": {
+    "security": ["private password exposed", "ataque de phishing en cuenta", "suspicious token authentication", "vulnerabilidad con robo de credenciales", "malware steals secret key", "acceso no autorizado por contrasena"],
+    "reliability": ["service offline connection refused", "error de respaldo y recuperacion", "database crash unavailable", "servidor caido tras despliegue", "failed health check endpoint", "fallo y perdida de datos"],
+    "performance": ["query latency bottleneck", "respuesta lenta por CPU", "expensive rendering computation", "rendimiento de cache lento", "slow memory throughput", "consulta con alta latencia"]
+  }
+}

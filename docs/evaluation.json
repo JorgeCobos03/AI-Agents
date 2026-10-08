@@ -1,0 +1,28 @@
+{
+  "accuracy": 1.0,
+  "testSamples": 18,
+  "trainingSamples": 48,
+  "labels": [
+    "security",
+    "reliability",
+    "performance"
+  ],
+  "confusionMatrix": [
+    [
+      6,
+      0,
+      0
+    ],
+    [
+      0,
+      6,
+      0
+    ],
+    [
+      0,
+      0,
+      6
+    ]
+  ],
+  "limitation": "Tiny synthetic held-out set authored with the training corpus. This does not establish real-world accuracy or calibration."
+}

@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+.vercel/
+node_modules/
+build/
+.env*
+!.env.example
+*.dll
+*.exe
+.DS_Store
