@@ -1,170 +1,103 @@
 # AI-Agents
 
-### Independent minds. Shared context.
+### Una misión. Tres formas de pensar.
 
-A transparent multi-agent incident-response laboratory built with **Python, C++20 and WebAssembly**. Train a small bilingual ML model, optimize a constrained response plan, and inspect every handoff in a browser. No API keys, paid inference, backend functions, or account required for visitors.
+**Un laboratorio interactivo para explorar cómo agentes especializados analizan problemas, comparten información y toman decisiones en equipo.**
 
-[![CI](https://github.com/JorgeCobos03/AI-Agents/actions/workflows/ci.yml/badge.svg)](https://github.com/JorgeCobos03/AI-Agents/actions/workflows/ci.yml)
-![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
-![C++](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=cplusplus&logoColor=white)
-![WebAssembly](https://img.shields.io/badge/WebAssembly-native%20engine-654FF0?logo=webassembly&logoColor=white)
-![License](https://img.shields.io/badge/license-MIT-C9F36C)
+Proyecto personal de [JorgeCobos03](https://github.com/JorgeCobos03), desarrollado con **Python, C++20 y WebAssembly**.
 
-**[Español ↓](#qué-demuestra)** · [Architecture](#arquitectura) · [Reproduce](#ejecución-local) · [Model card](docs/MODEL_CARD.md) · [Evaluation](docs/evaluation.json)
+**[Abrir la demo →](https://ai-agents-topaz-three.vercel.app/)**
 
-## Qué demuestra
+## ¿Qué es?
 
-AI-Agents convierte la coordinación multiagente en algo observable. Cada agente tiene una responsabilidad, entradas, salidas y un registro de decisiones. La demo compara cómo cambia el resultado cuando se comparte contexto y cuando un agente trabaja solo.
+AI-Agents es una demostración visual de un sistema multiagente aplicado a la atención de incidentes tecnológicos. Ante una lista de problemas y recursos limitados, el sistema clasifica los incidentes, propone cuáles atender y revisa las decisiones.
 
-| Agente | Implementación | Responsabilidad |
+La web permite observar a los agentes **trabajando juntos o por separado**, seguir sus mensajes y comparar los resultados. Cada ejecución ocurre en el navegador del visitante, sin registro ni claves de acceso.
+
+## ¿Para qué es?
+
+El proyecto hace visible algo que suele quedar oculto en los sistemas de IA: **cómo una decisión pasa de un componente a otro y qué aporta cada uno**.
+
+Su propósito es mostrar la combinación de aprendizaje automático en Python, optimización en C++ y una experiencia web donde se pueden explorar los resultados. El escenario de incidentes permite entender cómo priorizar cuando no es posible atender todo al mismo tiempo.
+
+## ¿Cómo funciona?
+
+El usuario elige un escenario y establece un presupuesto de esfuerzo. A partir de esa entrada, tres agentes asumen responsabilidades diferentes:
+
+| Agente | Qué hace | Qué aporta |
 |---|---|---|
-| Analista | Naive Bayes entrenado en Python; inferencia equivalente en JavaScript | Clasificar seguridad, disponibilidad o rendimiento; detectar vocabulario desconocido |
-| Planificador | C++20 real compilado a WebAssembly | Maximizar prioridad con un presupuesto mediante mochila 0/1 exacta |
-| Revisor | Reglas explícitas de verificación | Comprobar presupuesto y señalar falta de evidencia |
-| Coordinador | Web Worker en la demo; `asyncio` en Python | Orquestar el flujo, mantener contexto y emitir eventos |
+| **Analista** | Clasifica el texto como seguridad, disponibilidad o rendimiento con un modelo entrenado en Python. | Una categoría y una puntuación del modelo para cada incidente. |
+| **Planificador** | Ejecuta un optimizador C++ dentro del navegador mediante WebAssembly. | La combinación de incidentes con mayor prioridad total que cabe en el presupuesto. |
+| **Revisor** | Comprueba el esfuerzo del plan y señala clasificaciones con evidencia insuficiente. | Una revisión del presupuesto y avisos de incertidumbre. |
 
-**Esto es IA estadística y agentes especializados de alcance limitado, no un LLM ni una plataforma de agentes autónomos generales.** El revisor es determinista. Los incidentes son sintéticos y ninguna acción afecta infraestructura real. La animación reproduce eventos calculados; el indicador de cómputo mide la ejecución real sin el tiempo de animación.
+Un coordinador organiza los pasos y registra los intercambios. En modo colaborativo, cada agente utiliza el resultado del anterior.
 
-### Experimentos
+![Funcionamiento del equipo: entrada, clasificación, planificación y revisión](docs/images/colaboracion.svg)
 
-1. Ejecuta **En equipo**: el analista comparte clasificaciones, el planificador consume esa evidencia y el revisor audita el resultado.
-2. Cambia a **Individual → Planificador**: optimiza los impactos originales, sin la clasificación. Compara el conjunto seleccionado.
-3. Ejecuta **Individual → Revisor** con presupuesto bajo: revisa una propuesta FIFO de los tres primeros incidentes y detecta el exceso de presupuesto.
-4. Prueba **Evidencia incompleta**: los textos sin vocabulario conocido se marcan para revisión humana.
-5. Añade un incidente propio o exporta el resultado JSON, incluyendo entradas, prioridades, decisiones y eventos.
+### Trabajar juntos o por separado
 
-La política del equipo añade **15 puntos** a incidentes clasificados como seguridad con posterior ≥0.55, hasta un máximo de 100. Esta política es explícita y configurable en el código; no es una capacidad aprendida. El presupuesto y los impactos son unidades de demostración, no dinero ni tiempos estimados.
+**En equipo**, el analista comparte su clasificación con el planificador. Una política explícita añade 15 puntos de prioridad a los incidentes de seguridad con puntuación del modelo igual o superior al 55%, hasta un máximo de 100. El planificador selecciona el conjunto óptimo y el revisor comprueba el resultado.
 
-## Arquitectura
+**En modo individual**, se ejecuta únicamente el agente elegido:
 
-Diagrama preparado con Mermaid Chart y almacenado como Mermaid nativo para que GitHub lo renderice sin dependencias externas.
+- El **analista** clasifica los incidentes sin elaborar un plan.
+- El **planificador** utiliza los impactos originales, sin ajustes derivados de la clasificación.
+- El **revisor** audita una propuesta formada por los tres primeros incidentes y permite detectar si excede el presupuesto.
 
-```mermaid
-flowchart LR
-  subgraph Build[Construccion reproducible]
-    D[Corpus sintetico ES / EN] --> P[Python: entrenamiento Naive Bayes]
-    P --> M[model.json]
-    C[C++20: mochila 0/1] --> W[planner.wasm]
-  end
-  subgraph Cloud[Vercel Hobby: archivos estaticos]
-    M --> CDN[CDN]
-    W --> CDN
-    UI[Interfaz web] --> CDN
-  end
-  subgraph Browser[Navegador de cada visitante]
-    CDN --> WK[Web Worker aislado]
-    WK --> A[Analista: inferencia ML]
-    A --> B[Planificador: C++ / Wasm]
-    B --> R[Revisor: presupuesto e incertidumbre]
-    R --> T[Trazas y resultados exportables]
-  end
-```
+Así se puede observar qué cambia al compartir información y qué resultados quedan incompletos cuando solo participa un agente.
 
-```mermaid
-flowchart TD
-  I[Incidentes y presupuesto] --> V{Entrada valida?}
-  V -->|No| E[Error explicito]
-  V -->|Si| MODE{Modo}
-  MODE -->|Equipo| A[Analista: clasificar cada incidente]
-  A --> P[Politica: ajustar prioridad de seguridad]
-  P --> C[Planificador: resolver mochila en C++]
-  C --> R[Revisor: presupuesto e incertidumbre]
-  R --> H{Evidencia suficiente?}
-  H -->|No| HR[Solicitar revision humana]
-  H -->|Si| OK[Plan verificado]
-  MODE -->|Individual| S[Ejecutar solo el agente seleccionado]
-  S --> O[Resultado parcial explicito]
-  HR --> X[Exportar eventos y decisiones]
-  OK --> X
-  O --> X
-```
+![Comparación entre ejecución colaborativa y ejecución individual](docs/images/modos.svg)
 
-Los agentes del navegador ejecutan un DAG secuencial porque cada fase consume la anterior. Python clasifica incidentes mediante tareas `asyncio` cooperativas; no se afirma paralelismo de CPU. Cada visitante tiene un Worker independiente: no hay memoria compartida entre usuarios ni procesos residentes en la nube.
+<a id="arquitectura"></a>
 
-## Ejecución local
+### Python, C++ y la experiencia web
 
-Requisitos: **Python 3.11+** y **Node.js 20+**. La demo no requiere instalar paquetes npm y el Wasm compilado viene incluido.
+Python entrena un modelo estadístico **Naive Bayes** con ejemplos sintéticos en español e inglés. La web utiliza sus parámetros para clasificar texto. C++ resuelve la selección de incidentes mediante programación dinámica y se ejecuta como WebAssembly.
 
-```bash
-git clone https://github.com/JorgeCobos03/AI-Agents.git
-cd AI-Agents
-python scripts/train.py
-npm test
-python -m unittest discover -s tests -p "test_*.py" -v
-npm run build
-npm run dev
-```
+Vercel aloja los archivos de la aplicación. El trabajo de los agentes ocurre en un proceso separado del navegador para mantener la interfaz fluida. Cada visitante tiene una sesión independiente; los textos introducidos no se envían a una API de IA.
 
-Abre **http://localhost:5173**. Se necesita HTTP; abrir `index.html` con `file://` no permite cargar el Worker.
+![Arquitectura: modelo Python y motor C++ distribuidos desde Vercel y ejecutados en el navegador](docs/images/arquitectura.svg)
 
-### Reconstruir C++ → WebAssembly
+## Utilidad
 
-```bash
-python -m pip install ziglang==0.13.0
-python scripts/build_wasm.py
-npm test
-```
+- **Entender la colaboración multiagente:** ver qué recibe, produce y comunica cada agente.
+- **Explorar decisiones con recursos limitados:** cambiar el presupuesto y observar qué incidentes entran en el plan.
+- **Comparar estrategias:** contrastar una planificación independiente con otra que incorpora la clasificación del analista.
+- **Identificar incertidumbre:** reconocer cuándo el modelo dispone de poca evidencia y hace falta revisión humana.
+- **Examinar resultados:** consultar las trazas y descargar una ejecución con sus entradas y decisiones.
 
-`planner.wasm` contiene el código de `cpp/planner.cpp`, sin bibliotecas C++ externas ni llamadas de red. El compilador es dependencia de desarrollo, no de la web. El optimizador usa memoria fija y complejidad **O(n × presupuesto)**, con límites de 20 incidentes y 100 unidades. Su API C expone `set_task` y `solve`; el resultado es una máscara de bits. Los empates conservan la solución anterior, de forma determinista.
+## Aplicaciones
 
-### Python + C++ nativo
+El laboratorio ilustra patrones que pueden adaptarse a problemas como:
 
-```bash
-cmake -S cpp -B build
-cmake --build build
-PYTHONPATH=python python -m agents --native ./build/libplanner.so
-```
+| Contexto | Aplicación del patrón |
+|---|---|
+| **Operaciones de software** | Clasificar incidencias y priorizar su atención según impacto y capacidad. |
+| **Soporte técnico** | Organizar solicitudes por tipo y preparar una propuesta de atención. |
+| **Planificación de tareas** | Elegir un conjunto de actividades cuando el esfuerzo disponible es limitado. |
+| **Educación y experimentación** | Explicar agentes especializados, clasificación de texto, optimización y decisiones auditables. |
 
-En PowerShell:
+Son aplicaciones posibles de la arquitectura. La demo trabaja con incidentes sintéticos y no está conectada a sistemas reales de soporte, seguridad o producción.
 
-```powershell
-$env:PYTHONPATH="python"
-python -m agents                          # Referencia Python
-python -m agents --native ./build/Debug/planner.dll  # CMake / Visual Studio
-```
+## ¿Cómo se usa?
 
-La ruta de la biblioteca depende del generador y sistema operativo. `ctypes` configura explícitamente los tipos de la ABI. La biblioteca nativa mantiene buffers internos y debe serializarse si se comparte entre hilos; cada Worker de la demo tiene su propia instancia Wasm.
+1. Abre **[AI-Agents en la web](https://ai-agents-topaz-three.vercel.app/)**.
+2. Selecciona un escenario: **Lanzamiento de plataforma**, **Operación de e-commerce** o **Evidencia incompleta**.
+3. Elige **En equipo** o **Individual**. En el segundo caso, selecciona el agente que quieres observar.
+4. Ajusta el **presupuesto de esfuerzo** y pulsa **Ejecutar agentes**.
+5. Sigue el **registro de eventos** y revisa la **mesa de incidentes**: categorías, esfuerzos, impactos y decisiones.
+6. Prueba otra configuración para comparar resultados. También puedes añadir un texto con **Probar un incidente propio** y descargar la ejecución con **Exportar ejecución**.
 
-## Calidad y evaluación
+### Tres pruebas para explorar
 
-- Clasificador reproducible: 48 ejemplos de entrenamiento, 18 ejemplos reservados, tres clases y dos idiomas. Resultados y advertencias en [evaluation.json](docs/evaluation.json).
-- Pruebas del optimizador Wasm frente a búsqueda exhaustiva en 120 problemas generados con semilla fija.
-- Referencia Python frente a búsqueda exhaustiva en 50 problemas adicionales.
-- Pruebas de límites, presupuesto cero, 20 incidentes, colaboración efectiva, abstención y revisión de propuestas inválidas.
-- CI recompila C++, prueba la integración Python nativa y ejecuta el mismo Wasm que consume la web.
-- El build verifica los artefactos y exige menos de 250 KB para los siete archivos principales, sin compresión.
+- **Colaboración:** ejecuta el mismo escenario y presupuesto en equipo y después con el planificador individual. Observa si la prioridad de seguridad cambia el plan.
+- **Recursos insuficientes:** selecciona el revisor individual y reduce el presupuesto. El sistema señalará si la propuesta de los tres primeros incidentes lo excede.
+- **Incertidumbre:** ejecuta **Evidencia incompleta** en equipo. Algunos textos no contienen vocabulario conocido y se señalan para revisión humana.
 
-Un 100% en este diminuto conjunto sintético **no demuestra precisión en producción**. Consulta la [model card](docs/MODEL_CARD.md). El proyecto prioriza trazabilidad y reproducibilidad sobre afirmaciones de rendimiento sin evidencia.
+### Cómo interpretar lo que ves
 
-## Despliegue gratuito y límites
+El **esfuerzo** representa unidades de trabajo de demostración; el **impacto**, una valoración proporcionada en el escenario. La selección maximiza la suma de prioridades dentro del presupuesto, no el número de incidentes atendidos. **En espera** significa que el incidente quedó fuera del plan, no que carezca de importancia.
 
-Importa este repositorio en un equipo **Vercel Hobby**, framework **Other**, comando `npm run build`, directorio de salida **web**. `vercel.json` contiene la configuración. No añadas variables de entorno ni servicios de pago.
+La puntuación de clasificación es una probabilidad estadística **no calibrada**: un valor alto no garantiza que la categoría sea correcta. El indicador de cómputo muestra el tiempo real de procesamiento, sin contar la animación del registro.
 
-La web se aloja en la nube; la inferencia y optimización se ejecutan en el dispositivo del visitante. No hay funciones serverless, cron, base de datos, keep-alive, API de IA ni servidor que mantener despierto. Las sesiones se eliminan al cerrar o recargar la página; la exportación es local.
-
-**Gratis no significa ilimitado ni disponibilidad garantizada.** Los archivos consumen solicitudes CDN y transferencia. Las cuotas son compartidas con otros proyectos del equipo y pueden cambiar; superar límites de Hobby puede interrumpir el servicio. No es posible prometer "siempre activo para cualquier tráfico" en un plan gratuito. Revisa Usage antes de compartir la demo ampliamente. No se habilitan mejoras de pago automáticas desde este proyecto.
-
-Fuentes oficiales: [Hobby](https://vercel.com/docs/plans/hobby), [límites](https://vercel.com/docs/limits), [uso aceptable](https://vercel.com/docs/limits/fair-use-guidelines). Hobby es para proyectos personales no comerciales. Verificado el 8 de octubre de 2026; consulta las páginas y el panel para las cuotas vigentes.
-
-## Estructura
-
-```text
-cpp/                   Motor C++20 y CMake
-python/agents/         Entrenamiento, inferencia, asyncio y puente ctypes
-data/corpus.json       Datos sintéticos versionados con split explícito
-scripts/               Entrenamiento, compilación y verificación de build
-web/                   UI, Worker, inferencia, modelo y Wasm
-tests/                 Pruebas Python y Node/Wasm
-docs/                  Model card y evaluación reproducible
-.github/workflows/     CI con Python, C++ y Wasm
-```
-
-## Privacidad y seguridad
-
-Las entradas se procesan localmente y se insertan como texto, nunca como HTML. Hay validación de rangos, límite de texto y un tiempo máximo de ejecución. La CSP restringe recursos al mismo origen y permite WebAssembly. No hay analítica ni envío de texto a terceros. Vercel procesa las solicitudes normales de alojamiento conforme a sus políticas. No introduzcas información confidencial en demos públicas.
-
-## Contribuir
-
-Consulta [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) y la [licencia MIT](LICENSE). Las mejoras útiles incluyen corpus externos con licencia, evaluación de calibración, políticas configurables y nuevos optimizadores con pruebas de equivalencia.
-
-Built by [JorgeCobos03](https://github.com/JorgeCobos03).
+Este proyecto utiliza IA estadística y reglas explícitas, con un conjunto pequeño de datos sintéticos. Su finalidad es educativa y demostrativa; no genera respuestas como un LLM ni ejecuta acciones sobre infraestructura real. La demo no requiere servicios de inferencia de pago; su disponibilidad depende de las cuotas del alojamiento gratuito de Vercel.

@@ -1,0 +1,20 @@
+flowchart TB
+  subgraph Preparation["PREPARACIÓN DEL PROYECTO"]
+    D["Ejemplos sintéticos<br/>en español e inglés"] --> PY["Python<br/>Entrena el modelo"]
+    PY --> ML["Parámetros del clasificador"]
+    CPP["C++20<br/>Motor de optimización"] --> WA["WebAssembly"]
+  end
+  ML --> V["Vercel<br/>Aloja la aplicación web"]
+  WA --> V
+  subgraph Browser["NAVEGADOR DE CADA VISITANTE"]
+    V --> UI["Interfaz interactiva"]
+    UI --> WK["Worker independiente<br/>Ejecuta los agentes"]
+    WK --> RES["Clasificación · Plan · Revisión"]
+    RES --> EX["Visualización y exportación local"]
+  end
+  classDef base fill:#1b2633,stroke:#74889c,color:#eef3f8
+  classDef py fill:#1d3047,stroke:#86b8ff,color:#eef3f8
+  classDef cpp fill:#293a20,stroke:#c9f36c,color:#eef3f8
+  class D,V,UI,WK,RES,EX base
+  class PY,ML py
+  class CPP,WA cpp

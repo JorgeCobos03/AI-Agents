@@ -1,0 +1,21 @@
+flowchart TB
+  I["Elegir escenario y presupuesto"] --> M{"Modo de ejecución"}
+  M -->|En equipo| A["Analista<br/>Comparte la clasificación"]
+  A --> P["Planificador<br/>Usa la prioridad ajustada"]
+  P --> R["Revisor<br/>Audita presupuesto e incertidumbre"]
+  R --> T["Resultado colaborativo"]
+  M -->|Individual| S{"Agente elegido"}
+  S --> SA["Analista<br/>Solo clasificación"]
+  S --> SP["Planificador<br/>Impactos originales"]
+  S --> SR["Revisor<br/>Audita los tres primeros incidentes"]
+  SA --> O["Resultado individual"]
+  SP --> O
+  SR --> O
+  classDef base fill:#1b2633,stroke:#74889c,color:#eef3f8
+  classDef analyst fill:#1d3047,stroke:#86b8ff,color:#eef3f8
+  classDef planner fill:#293a20,stroke:#c9f36c,color:#eef3f8
+  classDef reviewer fill:#30253f,stroke:#c4a7fa,color:#eef3f8
+  class I,M,S,T,O base
+  class A,SA analyst
+  class P,SP planner
+  class R,SR reviewer

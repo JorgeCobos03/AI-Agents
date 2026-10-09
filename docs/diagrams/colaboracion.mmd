@@ -1,0 +1,13 @@
+flowchart LR
+  I["Incidentes<br/>y presupuesto"] --> A["01 · Analista<br/>Clasifica el texto"]
+  A --> P["02 · Planificador<br/>Selecciona el mejor conjunto"]
+  P --> R["03 · Revisor<br/>Comprueba el plan"]
+  R --> O["Resultados<br/>y registro de decisiones"]
+  classDef input fill:#1b2633,stroke:#86b8ff,color:#eef3f8
+  classDef analyst fill:#1d3047,stroke:#86b8ff,color:#eef3f8
+  classDef planner fill:#293a20,stroke:#c9f36c,color:#eef3f8
+  classDef reviewer fill:#30253f,stroke:#c4a7fa,color:#eef3f8
+  class I,O input
+  class A analyst
+  class P planner
+  class R reviewer
