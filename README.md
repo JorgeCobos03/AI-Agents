@@ -12,7 +12,7 @@ Proyecto personal de [JorgeCobos03](https://github.com/JorgeCobos03), desarrolla
 
 AI-Agents es una demostración visual de un sistema multiagente aplicado a la atención de incidentes tecnológicos. Ante una lista de problemas y recursos limitados, el sistema clasifica los incidentes, propone cuáles atender y revisa las decisiones.
 
-La web permite observar a los agentes **trabajando juntos o por separado**, seguir sus mensajes y comparar los resultados. Cada ejecución ocurre en el navegador del visitante, sin registro ni claves de acceso.
+La web permite observar a los agentes **trabajando juntos o por separado**, seguir sus mensajes y comparar los resultados. Nubes de partículas en Canvas representan a cada especialista: se mueven, intercambian señales y cambian de actividad durante la misión. Cada ejecución ocurre en el navegador del visitante, sin registro ni claves de acceso.
 
 ## ¿Para qué es?
 
@@ -54,7 +54,7 @@ Así se puede observar qué cambia al compartir información y qué resultados q
 
 Python entrena un modelo estadístico **Naive Bayes** con ejemplos sintéticos en español e inglés. La web utiliza sus parámetros para clasificar texto. C++ resuelve la selección de incidentes mediante programación dinámica y se ejecuta como WebAssembly.
 
-Vercel aloja los archivos de la aplicación. El trabajo de los agentes ocurre en un proceso separado del navegador para mantener la interfaz fluida. Cada visitante tiene una sesión independiente; los textos introducidos no se envían a una API de IA.
+Vercel aloja los archivos de la aplicación. El trabajo de los agentes ocurre en un proceso separado del navegador para mantener la interfaz fluida. Cada visitante tiene una sesión independiente; los textos introducidos no se envían a una API de IA. La escena utiliza Canvas 2D con perspectiva para dar volumen a las partículas, sin descargar modelos ni texturas.
 
 ![Arquitectura: modelo Python y motor C++ distribuidos desde Vercel y ejecutados en el navegador](docs/images/arquitectura.svg)
 
@@ -82,22 +82,24 @@ Son aplicaciones posibles de la arquitectura. La demo trabaja con incidentes sin
 ## ¿Cómo se usa?
 
 1. Abre **[AI-Agents en la web](https://ai-agents-topaz-three.vercel.app/)**.
-2. Selecciona un escenario: **Lanzamiento de plataforma**, **Operación de e-commerce** o **Evidencia incompleta**.
-3. Elige **En equipo** o **Individual**. En el segundo caso, selecciona el agente que quieres observar.
-4. Ajusta el **presupuesto de esfuerzo** y pulsa **Ejecutar agentes**.
-5. Sigue el **registro de eventos** y revisa la **mesa de incidentes**: categorías, esfuerzos, impactos y decisiones.
-6. Prueba otra configuración para comparar resultados. También puedes añadir un texto con **Probar un incidente propio** y descargar la ejecución con **Exportar ejecución**.
+2. Selecciona una situación: **Lanzar una plataforma**, **Mantener una tienda online** o **Investigar algo inesperado**.
+3. Elige **En equipo** o toca uno de los tres agentes para verlo trabajar en modo **Individual**. También puedes elegirlo desde el selector.
+4. Ajusta los **recursos disponibles**. Cambiar la situación, los recursos o el agente inicia una nueva misión; **Ejecutar misión** permite repetirla manualmente.
+5. Sigue las actividades de **Entender**, **Decidir** y **Comprobar**. Debajo encontrarás los resultados y el registro de decisiones.
+6. Añade un problema propio desde **¿Y si el problema fuera otro?** o descarga una ejecución con **Exportar**.
+
+La **demo automática** comienza al entrar y repite la misión periódicamente. Puedes desactivarla para explorar un resultado con calma. **Pausar movimiento** detiene la animación visual; los controles siguen funcionando. Si tu dispositivo tiene activada la preferencia de movimiento reducido, la página comienza sin animaciones ni ejecución automática. El botón **¿Es tu primera vez?** explica los tres pasos básicos.
 
 ### Tres pruebas para explorar
 
 - **Colaboración:** ejecuta el mismo escenario y presupuesto en equipo y después con el planificador individual. Observa si la prioridad de seguridad cambia el plan.
 - **Recursos insuficientes:** selecciona el revisor individual y reduce el presupuesto. El sistema señalará si la propuesta de los tres primeros incidentes lo excede.
-- **Incertidumbre:** ejecuta **Evidencia incompleta** en equipo. Algunos textos no contienen vocabulario conocido y se señalan para revisión humana.
+- **Incertidumbre:** ejecuta **Investigar algo inesperado** en equipo. Algunos textos no contienen vocabulario conocido y se señalan para revisión humana.
 
 ### Cómo interpretar lo que ves
 
 El **esfuerzo** representa unidades de trabajo de demostración; el **impacto**, una valoración proporcionada en el escenario. La selección maximiza la suma de prioridades dentro del presupuesto, no el número de incidentes atendidos. **En espera** significa que el incidente quedó fuera del plan, no que carezca de importancia.
 
-La puntuación de clasificación es una probabilidad estadística **no calibrada**: un valor alto no garantiza que la categoría sea correcta. El indicador de cómputo muestra el tiempo real de procesamiento, sin contar la animación del registro.
+La puntuación de clasificación es una probabilidad estadística **no calibrada**: un valor alto no garantiza que la categoría sea correcta. El indicador de cómputo muestra el tiempo real de procesamiento, sin contar la animación del registro. El movimiento de partículas es una representación visual; cada misión sí ejecuta clasificación y planificación reales. La animación se limita a 30 fotogramas por segundo y se pausa cuando la escena sale de pantalla o la pestaña queda oculta.
 
 Este proyecto utiliza IA estadística y reglas explícitas, con un conjunto pequeño de datos sintéticos. Su finalidad es educativa y demostrativa; no genera respuestas como un LLM ni ejecuta acciones sobre infraestructura real. La demo no requiere servicios de inferencia de pago; su disponibilidad depende de las cuotas del alojamiento gratuito de Vercel.

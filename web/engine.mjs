@@ -1,24 +1,24 @@
 export const labels = { security: 'Seguridad', reliability: 'Disponibilidad', performance: 'Rendimiento', unknown: 'Sin evidencia' };
 export const scenarios = {
   launch: [
-    { id: 'INC-01', text: 'Token leak exposes private credentials in public repository', cost: 4, impact: 80 },
-    { id: 'INC-02', text: 'Database timeout: service unavailable after deployment', cost: 3, impact: 72 },
-    { id: 'INC-03', text: 'Slow query and high latency on dashboard', cost: 2, impact: 52 },
-    { id: 'INC-04', text: 'Suspicious login and unauthorized admin access', cost: 3, impact: 68 },
-    { id: 'INC-05', text: 'Cache misses reduce throughput and response time', cost: 2, impact: 42 },
-    { id: 'INC-06', text: 'Backup recovery failed after server crash', cost: 5, impact: 76 },
+    { id: 'INC-01', text: 'Un token privado y credenciales quedaron expuestos en un repositorio público', cost: 4, impact: 80 },
+    { id: 'INC-02', text: 'La base de datos no responde: servicio no disponible tras el despliegue', cost: 3, impact: 72 },
+    { id: 'INC-03', text: 'El panel carga lento por una consulta con alta latencia', cost: 2, impact: 52 },
+    { id: 'INC-04', text: 'Se detectó acceso no autorizado a una cuenta de administrador', cost: 3, impact: 68 },
+    { id: 'INC-05', text: 'El caché lento reduce el rendimiento de la aplicación', cost: 2, impact: 42 },
+    { id: 'INC-06', text: 'Falló la recuperación del respaldo tras la caída del servidor', cost: 5, impact: 76 },
   ],
   commerce: [
     { id: 'INC-01', text: 'Consulta lenta con alta latencia', cost: 2, impact: 65 },
     { id: 'INC-02', text: 'Fuga de credenciales y secreto expuesto', cost: 5, impact: 82 },
-    { id: 'INC-03', text: 'Servicio caido error de conexion en base de datos', cost: 4, impact: 90 },
+    { id: 'INC-03', text: 'Servicio caído: error de conexión en base de datos', cost: 4, impact: 90 },
     { id: 'INC-04', text: 'Memoria saturada y cuello de botella', cost: 3, impact: 55 },
-    { id: 'INC-05', text: 'Ataque phishing roba contrasena de cuenta', cost: 2, impact: 60 },
+    { id: 'INC-05', text: 'Ataque phishing roba contraseña de cuenta', cost: 2, impact: 60 },
   ],
   uncertainty: [
-    { id: 'INC-01', text: 'Something unusual happened yesterday', cost: 2, impact: 30 },
-    { id: 'INC-02', text: 'Slow login with database timeout', cost: 3, impact: 60 },
-    { id: 'INC-03', text: 'Malware steals private password', cost: 4, impact: 85 },
+    { id: 'INC-01', text: 'Algo extraño ocurrió ayer', cost: 2, impact: 30 },
+    { id: 'INC-02', text: 'Login lento con timeout en la base de datos', cost: 3, impact: 60 },
+    { id: 'INC-03', text: 'Malware roba una contraseña privada', cost: 4, impact: 85 },
     { id: 'INC-04', text: 'El usuario reporta algo inesperado', cost: 2, impact: 40 },
   ],
 };

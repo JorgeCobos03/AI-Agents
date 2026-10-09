@@ -1,5 +1,5 @@
 import { readFile, stat } from 'node:fs/promises';
-const files = ['index.html', 'style.css', 'app.mjs', 'engine.mjs', 'worker.mjs', 'model.json', 'planner.wasm'];
+const files = ['index.html', 'style.css', 'app.mjs', 'scene.mjs', 'engine.mjs', 'worker.mjs', 'model.json', 'planner.wasm'];
 let total = 0;
 for (const file of files) total += (await stat(new URL(`../web/${file}`, import.meta.url))).size;
 const bytes = await readFile(new URL('../web/planner.wasm', import.meta.url));
